@@ -21,5 +21,7 @@ fn hello_h(name: String) -> String {
 }
 
 fn main() {
-    rocket::ignite().mount("/", routes![index_h, welcome_h, hello_h]).launch();
+    rocket::ignite()
+        .mount("/", routes![index_h, welcome_h, hello_h])
+        .launch();
 }
