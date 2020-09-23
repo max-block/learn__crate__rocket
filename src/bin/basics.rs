@@ -3,7 +3,7 @@
 #[macro_use]
 extern crate rocket;
 
-use rocket::response::Redirect;
+use rocket::{config::Environment, response::Redirect, Config};
 
 #[get("/")]
 fn index_h() -> Redirect {
@@ -21,7 +21,12 @@ fn hello_h(name: String) -> String {
 }
 
 fn main() {
-    rocket::ignite()
+    let config = Config::build(Environment::Development)
+        .address("localhost")
+        .port(3000)
+        .finalize()
+        .unwrap();
+    rocket::custom(config)
         .mount("/", routes![index_h, welcome_h, hello_h])
         .launch();
 }
