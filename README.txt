@@ -1,4 +1,4 @@
 https://github.com/SergioBenitez/Rocket
 https://rocket.rs/
 
-rustup override set nightly
+https://api.rocket.rs/v0.4/rocket_contrib/json/

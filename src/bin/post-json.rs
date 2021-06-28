@@ -1,12 +1,11 @@
-#![feature(proc_macro_hygiene, decl_macro)]
-
 #[macro_use]
 extern crate rocket;
 
 use rocket_contrib::json::Json;
-use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize,Deserialize, Debug)]
 struct CreateData {
     name: String,
     value: i32,
@@ -19,6 +18,7 @@ fn index(new_data: Json<CreateData>) -> String {
 }
 
 // curl -X POST -H "Content-Type: application/json" -d '{"name": "v1", "value": 333}' http://localhost:8000
-fn main() {
-    rocket::ignite().mount("/", routes![index]).launch();
+#[launch]
+fn rocket() -> _ {
+    rocket::build().mount("/", routes![index])
 }

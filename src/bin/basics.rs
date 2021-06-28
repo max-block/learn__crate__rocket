@@ -1,9 +1,7 @@
-#![feature(proc_macro_hygiene, decl_macro)]
-
 #[macro_use]
 extern crate rocket;
 
-use rocket::{config::Environment, response::Redirect, Config};
+use rocket::response::Redirect;
 
 #[get("/")]
 fn index_h() -> Redirect {
@@ -20,13 +18,11 @@ fn hello_h(name: String) -> String {
     format!("Hello, {}", name)
 }
 
-fn main() {
-    let config = Config::build(Environment::Development)
-        .address("localhost")
-        .port(3000)
-        .finalize()
-        .unwrap();
-    rocket::custom(config)
-        .mount("/", routes![index_h, welcome_h, hello_h])
-        .launch();
+#[launch]
+fn rocket() -> _ {
+    let figment = rocket::Config::figment()
+        .merge(("address", "127.0.0.1"))
+        .merge(("port", 3000));
+
+    rocket::custom(figment).mount("/", routes![index_h, welcome_h, hello_h])
 }
